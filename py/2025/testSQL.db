@@ -1,0 +1,43 @@
+import sqlite3
+import logging
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+log = logging.info
+mydb = sqlite3.connect('myql.db')
+cursor = mydb.cursor()
+
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS DATA (
+        address TEXT PRIMARY KEY,     
+        value TEXT,
+        recipient TEXT   
+   )
+""")
+
+
+data = [
+    ("0xC8D2d20ba67B5836Ba05d161EB4A8a84D7Ee6456", "0.02 ETH", "0xf30B614E0E6395919a3D31e67f66e8BA6465e5E2"),
+    ("0xD1183279F89D9e74681c33D32e0F509CAF89Ef52", "0 ETH", "0xDe63B92033aa77b115dB1CEC612029625d1c8FA5"),
+    ("0x9dd54A77CffD3C7eB999Ca6408544087d7f39CAD", "0.00001 ETH", "0x6B8f0D79a1349a5e21DE3F480F08265607F0D8f3")
+]
+
+cursor.executemany("""
+    INSERT OR IGNORE INTO DATA (
+    address,
+    value,
+    recipient)
+    VALUES (?, ?, ?)
+    """, data)
+
+mydb.commit()
+
+cursor.execute('SELECT * FROM DATA')
+
+output = cursor.fetchall()
+
+for address, value, recipient in output:
+    log(f'sender - {address} | value - {value} | recipient - {recipient}')
+
+
+mydb.close()
