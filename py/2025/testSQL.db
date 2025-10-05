@@ -30,6 +30,11 @@ cursor.executemany("""
     VALUES (?, ?, ?)
     """, data)
 
+
+
+cursor.execute('DELETE FROM DATA WHERE address = ?', ('0xC8D2d20ba67B5836Ba05d161EB4A8a84D7Ee6456',))
+
+
 mydb.commit()
 
 cursor.execute('SELECT * FROM DATA')
@@ -38,6 +43,12 @@ output = cursor.fetchall()
 
 for address, value, recipient in output:
     log(f'sender - {address} | value - {value} | recipient - {recipient}')
+    
+print()
+    
+for row in output:
+    log(f'{row[0]}')
+    
 
 
 mydb.close()
