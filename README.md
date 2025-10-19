@@ -1,1 +1,1 @@
-here i share fu\n code
+here i share fun code
